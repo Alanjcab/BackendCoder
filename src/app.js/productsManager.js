@@ -1,6 +1,8 @@
-const fs = require("fs");
+import fs from "fs";
 
-class ProductManager {
+import { v4 as uuidv4 } from "uuid";
+
+export default class ProductManager {
   constructor(path) {
     this.path = path;
   }
@@ -14,26 +16,15 @@ class ProductManager {
       console.error(error);
     }
   }
-  async addProduct(title, description, price, thumbnail, code, stock) {
-    if (!title || !description || !price || !thumbnail || !code || !stock) {
-      console.error("Todos los campos son obligatorios");
-      return;
-    }
+  async addProduct(obj) {
     try {
       let products = await this.getProducts();
-      if (products.some((product) => product.code === code)) {
-        console.error("El código ya existe");
-        return;
-      }
       const product = {
-        id: this.#getMaxId(products) + 1,
-        title: title,
-        description: description,
-        price: price,
-        thumbnail: thumbnail,
-        code: code,
-        stock: stock,
+        id: uuidv4(),
+        ...obj,
       };
+      const codeExist = products.find((p) => p.code === product.code);
+      if (codeExist) return "El codigo ya existe";
       products.push(product);
       await fs.promises.writeFile(this.path, JSON.stringify(products));
       console.log("Producto agregado");
@@ -41,23 +32,24 @@ class ProductManager {
       console.error("Error al agregar el producto", error);
     }
   }
-
-  async updateProduct(id, fieldToUpdate, updatedValue) {
+  async updateProduct(obj, id) {
     try {
       let products = await this.getProducts();
-      const index = products.findIndex((product) => product.id === id);
-      if (index === -1) {
+      let productIndex = products.findIndex((product) => product.id === id);
+      if (productIndex === -1) {
         console.error("Producto no encontrado");
-        return;
+        return null;
       }
-      products[index][fieldToUpdate] = updatedValue;
+      products[productIndex] = { ...products[productIndex], ...obj };
+
       await fs.promises.writeFile(this.path, JSON.stringify(products));
       console.log("Producto actualizado");
+      return products[productIndex];
     } catch (error) {
       console.error("Error al actualizar el producto", error);
+      throw error;
     }
   }
-
   async deleteProduct(id) {
     try {
       let products = await this.getProducts();
@@ -73,14 +65,6 @@ class ProductManager {
       console.error("Error al eliminar el producto ", error);
     }
   }
-
-  #getMaxId(products) {
-    let maxId = 0;
-    products.forEach((product) => {
-      if (product.id > maxId) maxId = product.id;
-    });
-    return maxId;
-  }
   async getProductById(id) {
     try {
       const products = await this.getProducts();
@@ -94,52 +78,3 @@ class ProductManager {
     }
   }
 }
-
-const productManager = new ProductManager("./data.json");
-
-productManager.addProduct(
-  "zapatillas",
-  "adidas Galaxy",
-  50000,
-  "zapatillas.jpg",
-  "galaxy123",
-  30
-);
-productManager.addProduct(
-  "zapatillas",
-  "adidas forum",
-  100000,
-  "zapatillas.jpg",
-  "galaxy126",
-  30
-);
-productManager.addProduct(
-  "zapatillas",
-  "adidas Galaxy",
-  50000,
-  "zapatillas.jpg",
-  "galaxy123",
-  30
-);
-productManager.addProduct(
-  "zapatillas",
-  30000,
-  "zapatillas.jpg",
-  "galaxy125",
-  30
-);
-const eliminarProducto = 2;
-
-productManager.deleteProduct(eliminarProducto)
-
-const test = async()=>{
-  try {
-    const products = await productManager.getProducts();
-    console.log(products);
-  } catch (error) {
-    console.error("Error al obtener los productos", error);
-  }
-}
-
-test()
-
