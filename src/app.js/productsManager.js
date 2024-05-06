@@ -21,10 +21,11 @@ export default class ProductManager {
       let products = await this.getProducts();
       const product = {
         id: uuidv4(),
+        status: true,
         ...obj,
       };
       const codeExist = products.find((p) => p.code === product.code);
-      if (codeExist) return "El codigo ya existe";
+      if (codeExist) return "El código ya existe";
       products.push(product);
       await fs.promises.writeFile(this.path, JSON.stringify(products));
       console.log("Producto agregado");
