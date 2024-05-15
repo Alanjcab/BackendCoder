@@ -1,0 +1,20 @@
+<form id="form">
+    <label>Title:</label><input name="title" id="title">
+    <label>description:</label><input name="description" id="description">
+    <laber>price:</laber><input name="price" id="price">
+    <laber>code:</laber><input name="code" id="code">
+    <laber>categoria:</laber><input name="categoria" id="categoria">
+    <laber>stock:</laber><input name="stock" id="stock">
+    <input type="submit" value="SEND">
+</form>
+
+<p id="products"></p>
+
+<form id="deleteForm">
+    <label for="productId">ID del producto a eliminar:</label>
+    <input type="text" id="productId" name="productId">
+    <button type="submit">Eliminar Producto</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>

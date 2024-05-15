@@ -1,21 +1,11 @@
 import {Router} from "express";
-const router = Router();
-
-
+import {productValidator} from '../middlewares/productValidator.js'
 import ProductManager from "../app.js/productsManager.js";
+
+const router = Router();
 
 const productManager = new ProductManager('./src/data/products.json');
 
-import {productValidator} from '../middlewares/productValidator.js'
-
-router.get('/', async (req, res)=>{
-    try {
-        const products = await productManager.getProducts();
-        res.json(products);
-    } catch (error) {
-        next(error)
-    }
-})
 
 router.post('/', productValidator, async (req, res)=>{
     try {
