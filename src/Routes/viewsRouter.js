@@ -1,12 +1,12 @@
 import express from "express";
-import ProductManager from "../app.js/productsManager.js";
+import ProductDaoFs from "../daos/fileSystem/productDao.js";
 
 const router = express.Router();
-const productManager = new ProductManager("./src/data/products.json");
+const productDao = new ProductDaoFs("./src/daos/fileSystem/products.json");
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productManager.getProducts();
+    const products = await productDao.getProducts();
     res.render("home", { products });
   } catch (error) {
     console.error("Error al obtener los productos:", error);

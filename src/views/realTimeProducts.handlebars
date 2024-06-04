@@ -1,20 +1,28 @@
-<form id="form" class="form">
-    <label>Title:</label><input name="title" id="title">
-    <label>description:</label><input name="description" id="description">
-    <laber>price:</laber><input name="price" id="price">
-    <laber>code:</laber><input name="code" id="code">
-    <laber>categoria:</laber><input name="categoria" id="categoria">
-    <laber>stock:</laber><input name="stock" id="stock">
-    <input type="submit" value="SEND">
-</form>
+<div class="divContainer">
+    <form id="form" class="form">
+        <label>TITULO</label><input name="title" id="title">
+        <label>DESCRIPCION</label><input name="description" id="description">
+        <laber>PRECIO</laber><input name="price" id="price">
+        <laber>CODIGO</laber><input name="code" id="code">
+        <laber>CATEGORIA</laber><input name="categoria" id="categoria">
+        <laber>STOCK</laber><input name="stock" id="stock">
+        <div class="divBtn">
+            <input type="submit" value="SEND" class="bottonSend">
+        </div>
+    </form>
 
-<p id="products"></p>
+<div id="products" class="containerListP">Lista de productos</div>
 
-<form id="deleteForm">
-    <label for="productId">ID del producto a eliminar:</label>
-    <input type="text" id="productId" name="productId">
-    <button type="submit">Eliminar Producto</button>
-</form>
+        <div class="formDeleteId">
+            <form id="deleteForm" >
+                <div class="containerDltId">
+                <label for="productId">Ingrese el ID para eliminar el producto:</label>
+                <input type="text" id="productId" name="productId">
+                <button type="submit" class="btnDeleteId">Eliminar Producto</button>
+            </form>
+        </div>
+</div>
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/index.js"></script>

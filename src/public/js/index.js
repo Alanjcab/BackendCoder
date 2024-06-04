@@ -31,7 +31,9 @@ form.onsubmit = (e) => {
 socket.on("products", (arrayProducts) => {
   let infoProducts = "";
   arrayProducts.map((prod) => {
-    infoProducts += `${prod.title} - ${prod.description} - $${prod.price} - ${prod.code} - ${prod.categoria} - ${prod.stock}</br>`;
+    infoProducts += `<div>
+                      <p class="textoProd">${prod.title} - ${prod.description} - $${prod.price} - ${prod.code} - ${prod.categoria} - ${prod.stock}</p>
+                     </div>`;
   });
   products.innerHTML = infoProducts;
 });

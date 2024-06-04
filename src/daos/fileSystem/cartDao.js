@@ -1,9 +1,9 @@
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 
-import ProductManager from "./productsManager.js";
+import ProductDao from "./productDao.js";
 
-const productManager = new ProductManager('./src/data/products.json');
+const productDao = new ProductDao('/src/daos/fileSystem/carts.json');
 
 export default class CartManager {
   constructor(path) {
@@ -50,7 +50,7 @@ export default class CartManager {
 
   async saveProductToCart(idCart, idProduct) {
     try {
-      const prodExist = await productManager.getProductById(idProduct);
+      const prodExist = await productDao.getProductById(idProduct);
       if (!prodExist) throw new Error("El producto no existe.");
       const cartExist = await this.getCartById(idCart);
       if (!cartExist) throw new Error("El carrito no existe.");

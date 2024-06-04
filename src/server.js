@@ -7,11 +7,12 @@ import { __dirname } from "./utils.js";
 import handlebars from "express-handlebars";
 import viewsRouter from "./Routes/viewsRouter.js";
 import { Server } from "socket.io";
-import ProductManager from "./app.js/productsManager.js";
+import ProductDaoFs from "./daos/fileSystem/productDao.js";
+import { initMongoDb } from "./daos/mongoDb/conection.js";
 
 const app = express();
 
-const productManager = new ProductManager("./src/data/products.json");
+const productDaoFs = new ProductDaoFs("src/daos/fileSystem/products.json");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -23,10 +24,12 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use("/", viewsRouter);
 
-app.use("/api/carts", cartRouter);
-app.use("/api/products", productsRouter);
+app.use("/carts", cartRouter);
+app.use("/products", productsRouter);
 
 app.use(errorHandler);
+
+initMongoDb();
 
 const PORT = 8080;
 
@@ -45,9 +48,9 @@ socketServer.on("connection", (socket) => {
 
   socket.on("newProduct", async (product) => {
     try {
-      await productManager.addProduct(product);
+      await productDaoFs.addProduct(product);
 
-      const products = await productManager.getProducts();
+      const products = await productDaoFs.getProducts();
 
       socketServer.emit("products", products);
     } catch (error) {
@@ -57,9 +60,9 @@ socketServer.on("connection", (socket) => {
 
   socket.on("deleteProduct", async (productId) => {
     try {
-      await productManager.deleteProduct(productId);
+      await productDaoFs.deleteProduct(productId);
 
-      const products = await productManager.getProducts();
+      const products = await productDaoFs.getProducts();
 
       socket.emit("products", products);
     } catch (error) {
