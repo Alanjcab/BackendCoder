@@ -9,6 +9,11 @@ import viewsRouter from "./Routes/viewsRouter.js";
 import { Server } from "socket.io";
 import ProductDaoFs from "./daos/fileSystem/productDao.js";
 import { initMongoDb } from "./daos/mongoDb/conection.js";
+import cookieParser from "cookie-parser"; 
+import 'dotenv/config';
+
+//const SECRET = express.env.SECRET_KEY;
+//app.use(cookieParser(SECRET));
 
 const app = express();
 
