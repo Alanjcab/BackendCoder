@@ -4,7 +4,7 @@ import ProductDaoFs from "../daos/fileSystem/productDao.js";
 const router = express.Router();
 const productDao = new ProductDaoFs("./src/daos/fileSystem/products.json");
 
-router.get("/", async (req, res) => {
+router.get("/home", async (req, res) => {
   try {
     const products = await productDao.getProducts();
     res.render("home", { products });
@@ -17,5 +17,14 @@ router.get("/", async (req, res) => {
 router.get("/realTimeProducts", async (req, res) => {
   res.render("realTimeProducts");
 });
+
+router.get("/login", async (req, res) => {
+  res.render("login");
+});
+
+router.get("/register", async (req, res) => {
+  res.render("register");
+});
+
 
 export default router;

@@ -1,6 +1,7 @@
 import express from "express";
 import productsRouter from "./Routes/productRouter.js";
 import cartRouter from "./Routes/cartRouter.js";
+import userRouter from "./Routes/userRouter.js";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { __dirname } from "./utils.js";
@@ -9,13 +10,29 @@ import viewsRouter from "./Routes/viewsRouter.js";
 import { Server } from "socket.io";
 import ProductDaoFs from "./daos/fileSystem/productDao.js";
 import { initMongoDb } from "./daos/mongoDb/conection.js";
-import cookieParser from "cookie-parser"; 
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import 'dotenv/config';
 
-//const SECRET = express.env.SECRET_KEY;
-//app.use(cookieParser(SECRET));
-
 const app = express();
+
+const storeConfig = {
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URL,
+    //crypto: process.env.SECRET_KEY,
+    ttl: 1800,
+  }),
+  secret: process.env.SECRET_KEY,
+  resave: true,
+  saveUnitialized: true,
+  cookie: {
+    maxAge: 180000
+  }
+}
+
+app.use(session(storeConfig))
+app.use(cookieParser());
 
 const productDaoFs = new ProductDaoFs("src/daos/fileSystem/products.json");
 
@@ -27,10 +44,12 @@ app.use(morgan("dev"));
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
-app.use("/", viewsRouter);
 
-app.use("/carts", cartRouter);
-app.use("/products", productsRouter);
+
+app.use("/", viewsRouter);
+app.use("/api/carts", cartRouter);
+app.use("/api/products", productsRouter);
+app.use("/users", userRouter);
 
 app.use(errorHandler);
 
