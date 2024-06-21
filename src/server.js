@@ -14,13 +14,15 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import 'dotenv/config';
+import passport from "passport";
+import './passport/localStrategy.js';
+import './passport/githubStrategy.js';
 
 const app = express();
 
 const storeConfig = {
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URL,
-    //crypto: process.env.SECRET_KEY,
     ttl: 1800,
   }),
   secret: process.env.SECRET_KEY,
@@ -45,6 +47,8 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", viewsRouter);
 app.use("/api/carts", cartRouter);

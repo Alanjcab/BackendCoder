@@ -1,13 +1,17 @@
 import { Router } from "express";
+import {registerResponse, loginResponse, githubResponse} from "../controllers/userController.js";
+import passport from "passport";
+import { isAuth } from "../middlewares/isAuth.js";
+
 const router = Router();
 
-import { login,logout,visit,infoSession,register, } from "../controllers/userController.js";
-import { validateLogin } from "../middlewares/validateLogin.js";
+router.post("/register", passport.authenticate('register'), registerResponse);
 
-router.post('/login', login);
-router.post('/register', register);
-router.get('/info', validateLogin, infoSession);
-router.get('/secret-endpoint', validateLogin, visit);
-router.post('/logout', logout);
+router.post("/login", passport.authenticate('login'), loginResponse);
+router.get('/private', isAuth, (req, res) => res.json({ msg: 'Ruta PRIVADA' }))
+
+router.get('/register-github', passport.authenticate('github', {scope: ['user: emial']}))
+
+router.get('/home', passport.authenticate('github', {scope: ['user: emial']}), githubResponse);
 
 export default router;
