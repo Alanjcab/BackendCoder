@@ -6,6 +6,7 @@ export const registerResponse = (req, res, next) => {
             msg: 'Register OK',
             session: req.session
         })
+       /*res.redirect('/login')*/
     } catch (error) {
         next(error);
     }
@@ -28,6 +29,7 @@ export const loginResponse = async (req, res, next) => {
                 role
             }
         })
+        /*res.redirect('/home')*/
     } catch (error) {
         next(error);
     }
