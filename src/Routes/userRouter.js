@@ -12,6 +12,19 @@ router.get('/private', isAuth, (req, res) => res.json({ msg: 'Ruta PRIVADA' }))
 
 router.get('/register-github', passport.authenticate('github', {scope: ['user: emial']}))
 
-router.get('/home', passport.authenticate('github', {scope: ['user: emial']}), githubResponse);
+//router.get('/home', passport.authenticate('github', {scope: ['user: emial']}), githubResponse);
+
+router.get('/home', passport.authenticate( 'github' , {
+    failureRedirect: '/login', 
+    successRedirect: '/profile-github', 
+    passReqToCallback: true
+}));
+
+router.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) res.send(err);
+        res.redirect('/login'); 
+      });
+});
 
 export default router;

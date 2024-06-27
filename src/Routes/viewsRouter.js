@@ -1,5 +1,6 @@
 import express from "express";
 import ProductDaoFs from "../daos/fileSystem/productDao.js";
+import { isAuth } from "../middlewares/isAuth.js";
 
 const router = express.Router();
 const productDao = new ProductDaoFs("./src/daos/fileSystem/products.json");
@@ -24,6 +25,13 @@ router.get("/login", async (req, res) => {
 
 router.get("/register", async (req, res) => {
   res.render("register");
+});
+
+router.get("/profile-github", isAuth, (req, res) => {
+  console.log("req.user", req.user);
+  const user = req.user.toObject();
+  console.log(user);
+  res.render("home", { user });
 });
 
 
