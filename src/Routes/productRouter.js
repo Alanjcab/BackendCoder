@@ -3,15 +3,13 @@ import * as controller from "../controllers/productController.js";
 
 const router = Router();
 
-router.get('/', controller.getAll)
-
-router.get('/:id', controller.getById)
-
-router.post('/',controller.create)
-
-router.put('/:id',controller.update)
-
-router.delete('/:id',controller.remove)
+router.route('/')
+      .get(controller.getAll)
+      .post(controller.create)
+router.route('/id')
+      .get(controller.getById)
+      .put(controller.update)
+      .delete(controller.remove)
 
 export default router;
 

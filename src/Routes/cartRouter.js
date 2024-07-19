@@ -2,21 +2,17 @@ import { Router } from "express";
 import * as controller from "../controllers/cartController.js";
 const router = Router();
 
-router.get("/", controller.getAll);
-
-router.get("/:id", controller.getById);
-
-router.post("/", controller.create);
-
-router.put("/:id", controller.update);
-
-router.delete("/:id", controller.remove);
-
-router.post("/:idCart/products/:idProd", controller.addProdToCart);
-
-router.delete("/:idCart/products/:idProd", controller.removeProdToCart);
-
-router.put("/:idCart/products/:idProd", controller.updateProdQuantityToCart);
+router.route('/')
+    .get(controller.getAll)
+    .post(controller.create)
+router.route('/:id')
+    .get(controller.getById)
+    .put(controller.update)
+    .delete(controller.remove)
+router.route('/:idCart/products/:idProd')
+    .post(controller.addProdToCart)
+    .delete(controller.removeProdToCart)
+    .put(controller.updateProdQuantityToCart)
 
 router.delete("/clear/:idCart", controller.clearCart);
 

@@ -1,7 +1,4 @@
 import express from "express";
-import productsRouter from "./Routes/productRouter.js";
-import cartRouter from "./Routes/cartRouter.js";
-import userRouter from "./Routes/userRouter.js";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { __dirname } from "./utils.js";
@@ -9,7 +6,6 @@ import handlebars from "express-handlebars";
 import viewsRouter from "./Routes/viewsRouter.js";
 import { Server } from "socket.io";
 import ProductDaoFs from "./daos/fileSystem/productDao.js";
-import { initMongoDb } from "./daos/mongoDb/conection.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -17,12 +13,15 @@ import 'dotenv/config';
 import passport from "passport";
 import './passport/localStrategy.js';
 import './passport/githubStrategy.js';
+import router from "./Routes/index.js";
+import config from "./config.js";
+import './daos/mongoDb/conection.js';
 
 const app = express();
 
 const storeConfig = {
   store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL,
+    mongoUrl: process.env.MONGO_ATLAS_URL,
     ttl: 1800,
   }),
   secret: process.env.SECRET_KEY,
@@ -50,16 +49,15 @@ app.set("view engine", "handlebars");
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/", router);
+
 app.use("/", viewsRouter);
-app.use("/api/carts", cartRouter);
-app.use("/api/products", productsRouter);
-app.use("/users", userRouter);
 
 app.use(errorHandler);
 
-initMongoDb();
 
-const PORT = 8080;
+
+const PORT = config.PORT
 
 const httpServer = app.listen(PORT, () =>
   console.log(`Server ok on porto ${PORT}`)
