@@ -1,9 +1,9 @@
 import express from "express";
-import ProductDaoFs from "../daos/fileSystem/productDao.js";
+import ProductDaoFs from "../persistence/daos/fileSystem/productDao.js";
 import { isAuth } from "../middlewares/isAuth.js";
 
 const router = express.Router();
-const productDao = new ProductDaoFs("./src/daos/fileSystem/products.json");
+const productDao = new ProductDaoFs("./src/persistence/daos/fileSystem/products.json");
 
 router.get("/home", async (req, res) => {
   try {

@@ -28,7 +28,12 @@ const UserSchema = new Schema({
   isGithub: {
     type: Boolean,
     default: false,
+  },
+  cart: {
+    type: Schema.Types.ObjectId,
+    ref: "carts",
+    default: []
   }
 });
 
-export const userModel = model("user", UserSchema);
+export const userModel = model("users", UserSchema);

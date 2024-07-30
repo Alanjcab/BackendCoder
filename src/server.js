@@ -5,7 +5,7 @@ import { __dirname } from "./utils.js";
 import handlebars from "express-handlebars";
 import viewsRouter from "./Routes/viewsRouter.js";
 import { Server } from "socket.io";
-import ProductDaoFs from "./daos/fileSystem/productDao.js";
+import ProductDaoFs from "./persistence/daos/fileSystem/productDao.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -13,10 +13,11 @@ import 'dotenv/config';
 import passport from "passport";
 import './passport/localStrategy.js';
 import './passport/githubStrategy.js';
-import router from "./Routes/index.js";
 import config from "./config.js";
-import './daos/mongoDb/conection.js';
+import './persistence/daos/mongoDb/conection.js';
+import mainRouter from "./Routes/index.js";
 
+const MainRouter = new mainRouter();
 const app = express();
 
 const storeConfig = {
@@ -35,7 +36,7 @@ const storeConfig = {
 app.use(session(storeConfig))
 app.use(cookieParser());
 
-const productDaoFs = new ProductDaoFs("src/daos/fileSystem/products.json");
+const productDaoFs = new ProductDaoFs("src/persistence/daos/fileSystem/products.json");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,7 +50,7 @@ app.set("view engine", "handlebars");
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", router);
+app.use("/api", MainRouter.getRouter());
 
 app.use("/", viewsRouter);
 
@@ -60,7 +61,7 @@ app.use(errorHandler);
 const PORT = config.PORT
 
 const httpServer = app.listen(PORT, () =>
-  console.log(`Server ok on porto ${PORT}`)
+  console.log(`Server ok: Port ${PORT}`)
 );
 
 const socketServer = new Server(httpServer);

@@ -1,40 +1,26 @@
+import mongoDao from "./mongoDao.js";
 import { CartModel } from "./models/cartModel.js";
 
-export default class CartDaoMongoDB {
+export default class cartDaoMongo extends mongoDao {
+  constructor() {
+    super(CartModel);
+  }
   async create() {
     try {
       return await CartModel.create({
         products: [],
       });
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
-
-  async getAll() {
-    try {
-      return await CartModel.find({});
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async getById(id) {
     try {
       return await CartModel.findById(id).populate("products.product");
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
-
-  async delete(id) {
-    try {
-      return await CartModel.findByIdAndDelete(id);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async addProdToCart(cartId, prodId, quantity) {
     try {
       const cart = await CartModel.findById(cartId);
@@ -51,7 +37,7 @@ export default class CartDaoMongoDB {
 
       return cart;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -85,7 +71,7 @@ export default class CartDaoMongoDB {
       });
       return response;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -97,7 +83,7 @@ export default class CartDaoMongoDB {
         { new: true }
       );
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -109,7 +95,43 @@ export default class CartDaoMongoDB {
         { new: true }
       );
     } catch (error) {
-      console.log(error);
+      throw new Error(error);;
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

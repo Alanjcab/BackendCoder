@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import "dotenv/config";
-import config from "../../config.js";
+import config from "../../../config.js";
 
 try {
     await mongoose.connect(config.MONGO_ATLAS_URL);
