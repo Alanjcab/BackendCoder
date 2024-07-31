@@ -6,7 +6,7 @@ import { isAuth } from "../middlewares/isAuth.js";
 const controller = new userController();
 const router = Router();
 
-router.post("/register", passport.authenticate('register'), controller.register);
+router.post("/register", passport.authenticate('register'),controller.register);
 router.post("/login", passport.authenticate('login'), controller.login);
 router.post("/current", [isAuth], controller.current);
 router.get('/private', isAuth, (req, res) => res.json({ msg: 'Ruta PRIVADA' }));

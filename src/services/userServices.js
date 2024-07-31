@@ -21,7 +21,7 @@ export default class userService extends services {
                   const newUser = await this.dao.create({
                     ...user,
                     password: createHash(password),
-                    role: "Admin",
+                    role: "admin",
                     cart: cartUser._id,
                   });
                   return newUser;

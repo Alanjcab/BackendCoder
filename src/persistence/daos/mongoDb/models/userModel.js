@@ -35,5 +35,5 @@ const UserSchema = new Schema({
     default: []
   }
 });
-
+const userColl = "users";
 export const userModel = model("users", UserSchema);

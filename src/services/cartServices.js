@@ -11,14 +11,12 @@ export default class cartServices extends services {
   async addProdToCart(cartId, prodId) {
     try {
       const existCart = await this.getById(cartId);
+      if (!existCart) return null;
+  
       const existProd = await prodDao.getById(prodId);
-      if (!existCart || !existProd) return null;
-      const existProdInCart = await cartDao.existProdInCart(cartId, prodId);
-      if (existProdInCart) {
-        const quantity = existProdInCart.products.find(p => p.product.toString() === prodId).quantity + 1;
-        return await cartDao.addProdToCart(cartId, prodId, quantity);
-      }
-      return await cartDao.addProdToCart(cartId, prodId);
+      if (!existProd) return null;
+
+      return await this.dao.addProdToCart(cartId, prodId);
     } catch (error) {
       throw new Error(error)
     }
@@ -26,10 +24,10 @@ export default class cartServices extends services {
   async removeProdToCart(cartId, prodId) {
     try {
       const existCart = await this.getById(cartId);
-      const existProd = existCart.products.find(p => p.product._id.toString() === prodId);
-      if (!existCart || !existProd) return null;
-      return await cartDao.removeProdToCart(cartId, prodId);
-
+      if(!existCart) return null;
+      const existProdInCart = await this.dao.existProdInCart(cartId, prodId);
+      if (!existProdInCart) return null;
+      return await this.dao.removeProdToCart(cartId, prodId);
     } catch (error) {
       throw new Error(error)
     }
@@ -37,9 +35,12 @@ export default class cartServices extends services {
   async updateProdQuantityToCart(cartId, prodId, quantity) {
     try {
       const existCart = await this.getById(cartId);
-      const existProd = existCart.products.find(p => p.product._id.toString() === prodId);
-      if (!existCart || !existProd) return null;
-      return await cartDao.updateProdQuantityToCart(cartId, prodId, quantity)
+      if(!existCart) return null;
+  
+      const existProdInCart = await this.dao.existProdInCart(cartId, prodId);
+      if (!existProdInCart) return null;
+  
+      return await this.dao.updateProdQuantityToCart(cartId, prodId, quantity);
     } catch (error) {
       throw new Error(error)
     }
@@ -47,8 +48,9 @@ export default class cartServices extends services {
   async clearCart(cartId) {
     try {
       const existCart = await this.getById(cartId);
+      console.log("existCart-->", existCart);
       if (!existCart) return null;
-      return cartDao.clearCart(cartId);
+      return await this.dao.clearCart(cartId);
     } catch (error) {
       throw new Error(error)
     }
