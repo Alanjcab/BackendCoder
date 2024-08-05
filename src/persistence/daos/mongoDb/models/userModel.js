@@ -36,4 +36,4 @@ const UserSchema = new Schema({
   }
 });
 const userColl = "users";
-export const userModel = model("users", UserSchema);
+export const userModel = model(userColl, UserSchema);

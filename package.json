@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@sinclair/typebox": "^0.32.35",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",

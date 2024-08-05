@@ -1,6 +1,7 @@
 import controllers from "./classController.js";
 import userService from "../services/userServices.js";
 import { createResponse } from "../utils.js";
+import passport from "passport";
 
 const UserService = new userService();
 
@@ -11,8 +12,8 @@ export default class userController extends controllers {
 
   register = async (req, res, next) => {
     try {
-      const data = await this.service.register(req.body);
-      !data ? createResponse(res, 404, data) : createResponse(res, 200, data);
+      const data = await UserService.register(req.body);
+      data ? createResponse(res, 201, data) : createResponse(res, 400, data);
     } catch (error) {
       next(error);
     }
@@ -28,7 +29,7 @@ export default class userController extends controllers {
       }
       const { first_name, last_name, email, age, role } = user;
       res.json({
-        msg: 'LOGIN OK!',
+        msg: 'LOGIN OK',
         user: {
           first_name,
           last_name,
@@ -53,23 +54,6 @@ export default class userController extends controllers {
       next(error);
     }
   };
-
-  async githubResponse(req, res, next) {
-    try {
-      const { first_name, last_name, email, role } = req.user;
-      res.json({
-        msg: 'LOGIN CON GITHUB OK!',
-        user: {
-          first_name,
-          last_name,
-          email,
-          role
-        }
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 }
 
 

@@ -18,7 +18,7 @@ const signUp = async (req, email, password, done) => {
     const user = await UserDao.getByEmail(email);
     if (user) return done(null, false);
     const newUser = await UserService.register(req.body);
-    return done(null, newUser);
+    return done(null,newUser) ;
   } catch (error) {
     console.log(error);
     return done(null, false);
@@ -50,8 +50,11 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await UserDao.getById(id);
+    console.log("lo que llega al deserializeUser: ", user);
     return done(null, user);
   } catch (error) {
     done(error);
   }
 });
+
+
