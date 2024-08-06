@@ -1,6 +1,6 @@
 import services from "./classService.js";
 import userDaoMongo from "../persistence/daos/mongoDb/userDao.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, isValidPassword } from "../utils/utils.js";
 import userRepository from "../persistence/repository/userRepository.js";
 import cartDaoMongo from "../persistence/daos/mongoDb/cartDao.js";
 

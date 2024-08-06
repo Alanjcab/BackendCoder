@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import { __dirname } from "./utils.js";
+import { __dirname } from "./utils/utils.js";
 import handlebars from "express-handlebars";
 import viewsRouter from "./Routes/viewsRouter.js";
 import { Server } from "socket.io";

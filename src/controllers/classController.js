@@ -1,4 +1,5 @@
-import { createResponse } from "../utils.js";
+import { httpResponse } from "../utils/httpResponse.js";
+const HttpResponse = new httpResponse();
 
 
 export default class controllers {
@@ -8,7 +9,7 @@ export default class controllers {
     getAll = async (req, res, next) => {
         try {
             const data = await this.service.getAll();
-            createResponse(res, 200, data);
+            return HttpResponse.Ok(res, data);
         } catch (error) {
             next(error);
         }
@@ -18,8 +19,8 @@ export default class controllers {
         try {
             const { id } = req.params;
             const data = await this.service.getById(id);
-            if (!data) createResponse(res, 404, data)
-            else createResponse(res, 200, data);
+            if (!data) return HttpResponse.NotFound(res, data);
+            else return HttpResponse.Ok(res, data);
         } catch (error) {
             next(error);
         }
@@ -28,7 +29,7 @@ export default class controllers {
     create = async (req, res, next) => {
         try {
             const data = await this.service.create(req.body);
-            createResponse(res, 200, data);
+            return HttpResponse.Ok(res, data);
         } catch (error) {
             next(error);
         }
@@ -38,8 +39,8 @@ export default class controllers {
         try {
             const { id } = req.params;
             const data = await this.service.update(id, req.body);
-            if (!data) createResponse(res, 404, data)
-            else createResponse(res, 200, data);
+            if (!data) return HttpResponse.NotFound(res, data);
+            else return HttpResponse.Ok(res, data);
         } catch (error) {
             next(error);
         }
@@ -49,8 +50,8 @@ export default class controllers {
         try {
             const { id } = req.params;
             const data = await this.service.delete(id);
-            if (!data) createResponse(res, 404, data)
-            else createResponse(res, 200, data);
+            if (!data) return HttpResponse.NotFound(res, data);
+            else return HttpResponse.Ok(res, data);
         } catch (error) {
             next(error);
         }

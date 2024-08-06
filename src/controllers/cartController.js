@@ -1,7 +1,8 @@
 import controllers from "./classController.js";
 import cartServices from "../services/cartServices.js";
-import { createResponse } from "../utils.js";
+import { httpResponse } from "../utils/httpResponse.js";
 
+const HttpResponse = new httpResponse();
 const CartServices = new cartServices();
 
 export default class cartController extends controllers {
@@ -16,8 +17,8 @@ export default class cartController extends controllers {
       cart,
       idProd,
     );
-    if (!newProdToUserCart) createResponse(res, 404, { msg: "Error add product to cart" });
-    else createResponse(res, 200, newProdToUserCart);
+    if (!newProdToUserCart) return HttpResponse.NotFound(res, "Error add product to cart") 
+    else return HttpResponse.OK(res, newProdToUserCart);
   } catch (error) {
     next(error.message);
   }
@@ -30,8 +31,8 @@ export default class cartController extends controllers {
       idCart,
       idProd,
     );
-    if (!delProdToUserCart) createResponse(res, 404, { msg: "cart or prod not existant" });
-    else createResponse(res, 200, {msg: `product ${idProd} deleted to cart`});
+    if (!delProdToUserCart)return HttpResponse.NotFound(res, "cart or prod not existant") 
+    else return HttpResponse.OK(res, delProdToUserCart); 
   } catch (error) {
     next(error.message);
   }
@@ -46,8 +47,8 @@ export default class cartController extends controllers {
       idProd,
       quantity
     );
-    if (!updateProdQuantity) createResponse(res, 404, { msg: "cart or prod not existant" });
-    else createResponse(res, 200, updateProdQuantity);
+    if (!updateProdQuantity) return HttpResponse.NotFound(res,"cart or prod not existant")
+    else return HttpResponse.OK(res, updateProdQuantity);
   } catch (error) {
     next(error.message);
   }
@@ -58,8 +59,8 @@ export default class cartController extends controllers {
       const clearCart = await this.service.clearCart(
         idCart,
       );
-      if (!clearCart) createResponse(res, 404, { msg: "Error clear cart" });
-      else createResponse(res, 200, clearCart);
+      if (!clearCart) return HttpResponse.NotFound(res,"Error clear cart")
+      else return HttpResponse.OK(res, clearCart);
   } catch (error) {
     next(error.message);
   }

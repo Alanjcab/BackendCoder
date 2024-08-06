@@ -50,7 +50,6 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await UserDao.getById(id);
-    console.log("lo que llega al deserializeUser: ", user);
     return done(null, user);
   } catch (error) {
     done(error);
