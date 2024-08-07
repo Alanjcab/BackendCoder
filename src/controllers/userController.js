@@ -14,7 +14,7 @@ export default class userController extends controllers {
     try {
       const data = await UserService.register(req.body);
       if(!data) return HttpResponse.NotFound(res, data);
-      else return HttpResponse.OK(res, data)
+      else return HttpResponse.Ok(res, data)
     } catch (error) {
       next(error);
     }
@@ -26,7 +26,7 @@ export default class userController extends controllers {
       if (req.session.passport && req.session.passport.user) id = req.session.passport.user;
       const user = await this.service.getById(id);
       if (!user) {
-        return HttpResponse.NotFound(res, "Error de autenticacion")
+        return HttpResponse.NotFound(res, data)
       }
       const { first_name, last_name, email, age, role } = user;
       return HttpResponse.Ok( res, {first_name,last_name, email, age, role})
@@ -40,8 +40,8 @@ export default class userController extends controllers {
      if(req.user){
       const { _id } = req.user;
       const user = await this.service.getUserById(_id);
-      return HttpResponse.ok( res, user);
-     } else return HttpResponse.Unauthorized(res, "Unauthorizer")
+      return HttpResponse.Ok( res, user);
+     } else return HttpResponse.Unauthorized(res, data)
     } catch (error) {
       next(error);
     }

@@ -18,7 +18,7 @@ export default class cartController extends controllers {
       idProd,
     );
     if (!newProdToUserCart) return HttpResponse.NotFound(res, "Error add product to cart") 
-    else return HttpResponse.OK(res, newProdToUserCart);
+    else return HttpResponse.Ok(res, newProdToUserCart);
   } catch (error) {
     next(error.message);
   }
@@ -32,7 +32,7 @@ export default class cartController extends controllers {
       idProd,
     );
     if (!delProdToUserCart)return HttpResponse.NotFound(res, "cart or prod not existant") 
-    else return HttpResponse.OK(res, delProdToUserCart); 
+    else return HttpResponse.Ok(res, delProdToUserCart); 
   } catch (error) {
     next(error.message);
   }
@@ -48,7 +48,7 @@ export default class cartController extends controllers {
       quantity
     );
     if (!updateProdQuantity) return HttpResponse.NotFound(res,"cart or prod not existant")
-    else return HttpResponse.OK(res, updateProdQuantity);
+    else return HttpResponse.Ok(res, updateProdQuantity);
   } catch (error) {
     next(error.message);
   }
@@ -60,7 +60,7 @@ export default class cartController extends controllers {
         idCart,
       );
       if (!clearCart) return HttpResponse.NotFound(res,"Error clear cart")
-      else return HttpResponse.OK(res, clearCart);
+      else return HttpResponse.Ok(res, clearCart);
   } catch (error) {
     next(error.message);
   }
