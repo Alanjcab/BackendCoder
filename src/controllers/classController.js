@@ -1,7 +1,6 @@
 import { httpResponse } from "../utils/httpResponse.js";
 const HttpResponse = new httpResponse();
 
-
 export default class controllers {
     constructor(service) {
         this.service = service;

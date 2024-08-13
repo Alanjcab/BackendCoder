@@ -12,10 +12,10 @@ import MongoStore from "connect-mongo";
 import 'dotenv/config';
 import passport from "passport";
 import './passport/localStrategy.js';
-import './passport/githubStrategy.js';
 import config from "./config.js";
-import './persistence/daos/mongoDb/conection.js';
+import './persistence/db/conection.js';
 import mainRouter from "./Routes/index.js";
+import { logger } from "./utils/logger.js"
 
 const MainRouter = new mainRouter();
 const app = express();
@@ -61,7 +61,7 @@ app.use(errorHandler);
 const PORT = config.PORT
 
 const httpServer = app.listen(PORT, () =>
-  console.log(`Server ok: Port ${PORT}`)
+  logger.info(`Server ok: Port ${PORT}`)
 );
 
 const socketServer = new Server(httpServer);
@@ -97,3 +97,4 @@ socketServer.on("connection", (socket) => {
     }
   });
 });
+
