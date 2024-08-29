@@ -1,0 +1,28 @@
+<div class="divContainer">
+    <form id="form" class="form">
+        <label>TITULO</label><input name="title" id="title">
+        <label>DESCRIPCION</label><input name="description" id="description">
+        <laber>PRECIO</laber><input name="price" id="price">
+        <laber>CODIGO</laber><input name="code" id="code">
+        <laber>CATEGORIA</laber><input name="categoria" id="categoria">
+        <laber>STOCK</laber><input name="stock" id="stock">
+        <div class="divBtn">
+            <input type="submit" value="SEND" class="bottonSend">
+        </div>
+    </form>
+
+<div id="products" class="containerListP">Lista de productos</div>
+
+        <div class="formDeleteId">
+            <form id="deleteForm" >
+                <div class="containerDltId">
+                <label for="productId">Ingrese el ID para eliminar el producto:</label>
+                <input type="text" id="productId" name="productId">
+                <button type="submit" class="btnDeleteId">Eliminar Producto</button>
+            </form>
+        </div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
