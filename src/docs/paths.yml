@@ -1,0 +1,355 @@
+paths:
+  /products:
+    post:
+      tags:
+        - products
+      summary: Crear un producto.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Producto creado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/createProduct'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/InternalServerError'
+    get:
+      tags:
+        - products
+      summary: Obtener todos los productos.
+      responses:
+        '200':
+          description: Productos encontrados con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/getAllProducts'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/InternalServerError'
+
+  /products/{id}:
+    get:
+      tags:
+        - products
+      summary: Obtener un producto por ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto encontrado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/getProductById'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/InternalServerError'
+    
+    put:
+      tags:
+        - products
+      summary: Actualizar producto.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Producto actualizado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/updateProduct'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/InternalServerError'
+    
+    delete:
+      tags:
+        - products
+      summary: Eliminar producto.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/deleteProduct'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products/InternalServerError'
+
+  /carts:
+    get:
+      tags:
+        - carts
+      summary: Mostrar todos los carritos.
+      responses:
+        '200':
+          description: Carritos encontrados con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/getAllCart'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+
+  /carts/{id}:
+    get:
+      tags:
+        - carts
+      summary: Mostrar carrito por ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito encontrado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/getCartById'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+    
+    delete:
+      tags:
+        - carts
+      summary: Eliminar carrito por ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/deleteCart'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+
+  /carts/products/{idProd}:              
+    post:
+      tags:
+        - carts
+      summary: Agregar producto al carrito.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Producto agregado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/addProductToCart'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+
+  /carts/{idCart}/products/{idProd}:
+    put:
+      tags:
+        - carts
+      summary: Actualizar producto del carrito.
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idProd
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Producto actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/updateProdQuantityToCart'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+    
+    delete:
+      tags:
+        - carts
+      summary: Eliminar producto del carrito.
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idProd
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/removeProductToCart'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+
+  /carts/clear/{idCart}:
+    delete:
+      tags:
+        - carts
+      summary: Limpiar carrito.
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito limpio correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/clearCart'
+        '500':
+          description: Error del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/carts/InternalServerError'
+  
+  /users/register:
+    post:
+      tags: 
+        - users
+      summary: Registro de usuario  
+      requestBody:  
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:  
+        '200':
+          description: Register success
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/users/user'
+  /users/login:
+    post:
+      tags: 
+        - users
+      summary: Login de usuario  
+      requestBody:  
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/login'
+        required: true
+      responses:  
+        '200':
+          description: Login success
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/users/user'  
+  /users/current:
+    get:
+      tags:
+        - users
+      summary: Datos del usuario autenticado
+      responses:
+        '200':
+          description: Datos del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users/user'
+
+

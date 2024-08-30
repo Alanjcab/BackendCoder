@@ -1,0 +1,79 @@
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - description
+        - price
+        - stock
+      properties:
+        name:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: No puede ser menor a 0
+        
+    CartItem:
+      type: object
+      required:
+        - product
+        - quantity
+      properties:
+        product:
+          type: string
+          description: ID del producto
+        quantity:
+          type: number
+          description: Cantidad del producto en el carrito
+          default: 1
+        
+    Cart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+    
+    User:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+        - password
+      properties:
+        first_name:
+          type: string
+          description: Nombre
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Email
+        password:
+          type: string
+          description: Contraseña
+    
+    login:
+      type: object
+      required:   
+        - email
+        - password
+      properties:  
+        email:
+          type: string
+          description: Email del usuario 
+        password:
+          type: string
+          description: Contraseña del usuario
+

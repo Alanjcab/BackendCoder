@@ -16,6 +16,9 @@ import config from "./config.js";
 import './persistence/db/conection.js';
 import mainRouter from "./Routes/index.js";
 import { logger } from "./utils/logger.js"
+import swaggerUI from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+import {info} from "./docs/info.js"
 
 const MainRouter = new mainRouter();
 const app = express();
@@ -32,6 +35,9 @@ const storeConfig = {
     maxAge: 180000
   }
 }
+
+const specs = swaggerJSDoc(info);
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(session(storeConfig))
 app.use(cookieParser());
