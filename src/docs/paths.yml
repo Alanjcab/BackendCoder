@@ -16,13 +16,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/createProduct'
+                $ref: '#/components/schemas/createProduct'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
     get:
       tags:
         - products
@@ -33,13 +33,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/getAllProducts'
+                $ref: '#/components/schemas/getAllProducts'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
 
   /products/{id}:
     get:
@@ -58,13 +58,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/getProductById'
+                $ref: '#/components/schemas/Product'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
     
     put:
       tags:
@@ -81,20 +81,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/updateProduct'
       responses:
         '200':
           description: Producto actualizado con éxito.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/updateProduct'
+                $ref: '#/components/schemas/updateProduct'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
     
     delete:
       tags:
@@ -112,13 +112,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/deleteProduct'
+                $ref: '#/components/schemas/deleteProduct'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
 
   /carts:
     get:
@@ -131,13 +131,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/getAllCart'
+                $ref: '#/components/schemas/Cart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
 
   /carts/{id}:
     get:
@@ -156,13 +156,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/getCartById'
+                $ref: '#/components/schemas/Cart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
     
     delete:
       tags:
@@ -180,13 +180,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/deleteCart'
+                $ref: '#/components/schemas/ClearCart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
 
   /carts/products/{idProd}:              
     post:
@@ -205,13 +205,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/addProductToCart'
+                $ref: '#/components/schemas/AddProductToCart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
 
   /carts/{idCart}/products/{idProd}:
     put:
@@ -241,13 +241,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/updateProdQuantityToCart'
+                $ref: '#/components/schemas/UpdateProdQuantityToCart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
     
     delete:
       tags:
@@ -270,13 +270,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/removeProductToCart'
+                $ref: '#/components/schemas/RemoveProductFromCart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
 
   /carts/clear/{idCart}:
     delete:
@@ -295,13 +295,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/clearCart'
+                $ref: '#/components/schemas/ClearCart'
         '500':
           description: Error del servidor.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/carts/InternalServerError'
+                $ref: '#/components/schemas/InternalServerError'
   
   /users/register:
     post:
@@ -320,7 +320,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/users/user'
+                $ref: '#/components/schemas/User'
   /users/login:
     post:
       tags: 
@@ -338,7 +338,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/users/user'  
+                $ref: '#/components/schemas/User'  
   /users/current:
     get:
       tags:
@@ -350,6 +350,6 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/users/user'
+                $ref: '#/components/schemas/User'
 
 
