@@ -33,6 +33,13 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "carts",
     default: []
+  },
+  last_conection: {
+    type: Date,
+  },
+  active: {
+    type: Boolean,
+    default: true,
   }
 });
 const userColl = "users";

@@ -53,6 +53,14 @@ export default class userController extends controllers {
       next(error);
     }
   };
+  checkUsersLastConection = async (req, res, next) => {
+    try {
+      const response = await this.service.checkUsersLastConection();
+      return HttpResponse.Ok(response)
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 

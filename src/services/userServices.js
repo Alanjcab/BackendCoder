@@ -1,6 +1,6 @@
 import services from "./classService.js";
 import userDaoMongo from "../persistence/daos/mongoDb/userDao.js";
-import { createHash, isValidPassword } from "../utils/utils.js";
+import { createHash, hashBeenMoreThanXtime, isValidPassword } from "../utils/utils.js";
 import userRepository from "../persistence/repository/userRepository.js";
 import cartDaoMongo from "../persistence/daos/mongoDb/cartDao.js";
 
@@ -46,6 +46,7 @@ export default class userService extends services {
       if (!userExist) return null;
       const passValid = isValidPassword(password, userExist);
       if (!passValid) return null;
+      await this.dao.updateLastConection(userExist.id)
       return userExist;
     } catch (error) {
       throw new Error(error);
@@ -58,6 +59,31 @@ export default class userService extends services {
       throw new Error(error);
     }
   };
+  async updateLastConection(userId) {
+    return await this.dao.update(userId, {
+      last_conection: new Date(),
+    })
+  }
+  async checkUserLastConection(){
+    try {
+      const usersInactive = [];
+      const users = await this.dao.getAll();
+      if(users.length > 0){
+        for (const user of users){
+          if(user.last_conection && hashBeenMoreThanXtime(user.last_conection)){
+            console.log(`paso mas de un minuto en su ultima conexion: ${user._id}`)
+            await this.dao.update(user._id, {
+              active: false
+            })
+            usersInactive.push(user.email);
+          }
+        }
+      }
+      return usersInactive;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 };
 
 
