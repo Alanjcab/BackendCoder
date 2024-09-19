@@ -100,7 +100,7 @@ export default class userService extends services {
     })
   }
 
-  async checkUserLastConection() {
+  async checkUsersLastConection() {
     try {
       const usersInactive = [];
       const users = await this.dao.getAll();
@@ -114,7 +114,7 @@ export default class userService extends services {
       }
       return usersInactive;
     } catch (error) {
-      throw new Error(`Error al verificar última conexión: ${error.message}`);
+      throw new Error(error);
     }
   }
 

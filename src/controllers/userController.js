@@ -91,7 +91,7 @@ export default class userController extends controllers {
   checkUsersLastConection = async (req, res, next) => {
     try {
       const response = await this.service.checkUsersLastConection();
-      return HttpResponse.Ok(response)
+      return HttpResponse.Ok(res, "email enviado")
     } catch (error) {
       next(error);
     }
