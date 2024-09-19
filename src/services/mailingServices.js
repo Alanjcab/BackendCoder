@@ -2,56 +2,65 @@ import { createTransport } from "nodemailer";
 import 'dotenv/config';
 
 const transporter = createTransport({
-    service: "gmail",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.GMAIL,
-      pass: process.env.PASS_GMAIL,
-    },
-  });
+  service: "gmail",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.GMAIL,
+    pass: process.env.PASS_GMAIL,
+  },
+});
 
-  const createMsgRegister = (first_name) =>
-    `<h1>Hola ${first_name}, ¡Bienvenido/a!</h1>`;
+const createMsgRegister = (first_name) =>
+  `<h1>Hola ${first_name}, ¡Bienvenido/a!</h1>`;
 
-  const createMsgReset = (first_name) => {
-    return `<p>¡Hola ${first_name}! Hacé click <a href="http://localhost:8080/new-pass">AQUÍ</a> 
+const createMsgReset = (first_name) => {
+  return `<p>¡Hola ${first_name}! Hacé click <a href="http://localhost:8080/new-pass">AQUÍ</a> 
       para restablecer tu contraseña.
       </p>`;
-  };
+};
+const createMsgInactiveAccountWarning = (first_name) => `
+    <p>Hola ${first_name},</p>
+    <p>Notamos que no has iniciado sesión en un tiempo.</p>
+    <p>Te recomendamos iniciar sesión cuanto antes para evitar la eliminación de tu cuenta.</p>
+  `;
 
-  export const sendMail = async (user, service, token = null) => {
-    try {
-      const { first_name, email } = user;
-  
-      let msg = "";
-  
-      service === "register"
-        ? (msg = createMsgRegister(first_name))
-        : service === "resetPass"
+export const sendMail = async (user, service, token = null) => {
+  try {
+    const { first_name, email } = user;
+
+    let msg = "";
+
+    service === "register"
+      ? (msg = createMsgRegister(first_name))
+      : service === "resetPass"
         ? (msg = createMsgReset(first_name))
-        : (msg = "");
-  
-      let subj = "";
-  
-      subj =
-        service === "register"
-          ? "Bienvenido/a"
-          : service === "resetPass"
+        : service === "inactiveAccountWarning"
+          ? (msg = createMsgInactiveAccountWarning(first_name))
+          : (msg = "");
+
+    let subj = "";
+
+    subj =
+      service === "register"
+        ? "Bienvenido/a"
+        : service === "resetPass"
           ? "Restablecer contraseña"
-          : "";
-  
-      const gmailOptions = {
-        from: process.env.GMAIL,
-        to: email,
-        subject: subj,
-        html: msg,
-      };
-  
-      const response = await transporter.sendMail(gmailOptions);
-      if (token) return token;
-      console.log("email enviado con exito", response);
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+          : service === "inactiveAccountWarning"
+            ? "Advertencia de cuenta inactiva"
+            : "";
+
+    const gmailOptions = {
+      from: process.env.GMAIL,
+      to: email,
+      subject: subj,
+      html: msg,
+    };
+
+    const response = await transporter.sendMail(gmailOptions);
+    if (token) return token;
+    console.log("email enviado con exito", response);
+  } catch (error) {
+    throw new Error(error);
+  }
+};

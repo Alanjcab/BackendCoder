@@ -5,7 +5,6 @@ export default class userDaoMongo extends mongoDao {
   constructor() {
     super(userModel);
   }
-
   async getByEmail(email) {
     try {
       return await this.model.findOne({ email });
@@ -13,13 +12,13 @@ export default class userDaoMongo extends mongoDao {
       throw new Error(error);
     }
   }
-  async getUserById(id){
+  async getUserById(id) {
     try {
-        return await this.model.findById(id).populate("cart"); 
+      return await this.model.findById(id).populate("cart");
     } catch (error) {
-        throw new Error(error)
+      throw new Error(error)
     }
-}
+  }
 }
 
 

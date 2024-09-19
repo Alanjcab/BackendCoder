@@ -96,6 +96,15 @@ export default class userController extends controllers {
       next(error);
     }
   }
+
+  getAllUsers = async (req, res, next) => {
+    try {
+      const users = await UserService.getAllUsers();
+      return HttpResponse.Ok(res, users);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 

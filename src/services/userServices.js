@@ -104,22 +104,28 @@ export default class userService extends services {
     try {
       const usersInactive = [];
       const users = await this.dao.getAll();
-      if (users.length > 0) {
-        for (const user of users) {
-          if (user.last_conection && hashBeenMoreThanXtime(user.last_conection)) {
-            console.log(`paso mas de un minuto en su ultima conexion: ${user._id}`)
-            await this.dao.update(user._id, {
-              active: false
-            })
-            usersInactive.push(user.email);
-          }
+      for (const user of users) {
+        if (user.last_conection && hashBeenMoreThanXtime(user.last_conection)) {
+          console.log(`Pasó más de un minuto desde la última conexión: ${user._id}`);
+          await this.dao.update(user._id, { active: false });
+          usersInactive.push(user.email);
+          await sendMail(user, 'inactiveAccountWarning');
         }
       }
       return usersInactive;
     } catch (error) {
+      throw new Error(`Error al verificar última conexión: ${error.message}`);
+    }
+  }
+
+  async getAllUsers() {
+    try {
+      return await this.dao.getAll('first_name email role');
+    } catch (error) {
       throw new Error(error);
     }
   }
+
 };
 
 

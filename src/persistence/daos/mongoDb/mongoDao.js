@@ -2,9 +2,9 @@ export default class mongoDao {
     constructor(model) {
         this.model = model;
     }
-    async getAll() {
+    async getAll(fields = '') {
         try {
-            return await this.model.find({});
+            return await this.model.find({}).select(fields);
         } catch (error) {
             throw new error(error);
         }
