@@ -2,6 +2,7 @@ import controllers from "./classController.js";
 import userService from "../services/userServices.js";
 import { httpResponse } from "../utils/httpResponse.js";
 import { logger } from "../utils/logger.js";
+import { sendMail } from "../services/mailingServices.js";
 
 const HttpResponse = new httpResponse();
 const UserService = new userService();
@@ -13,7 +14,7 @@ export default class userController extends controllers {
 
   register = async (req, res, next) => {
     try {
-      const data = await UserService.register(req.body); 
+      const data = await UserService.register(req.body);
       if (!data) return HttpResponse.NotFound(res, data);
       else {
         logger.info('Register user OK');
@@ -53,6 +54,40 @@ export default class userController extends controllers {
       next(error);
     }
   };
+
+  generateResetPass = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const token = await this.service.generateResetPass(user);
+      if (token) {
+        await sendMail(user, 'resetPass', token);
+        res.cookie('tokenpass', token);
+        HttpResponse.Ok(res, 200, 'Email reset pass send OK')
+      } else HttpResponse.Unauthorized(res, 404, 'error email reset pass send')
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  updatePass = async (req, res, next) => {
+    try {
+      const user = req.user;
+      if (!user) return HttpResponse.Unauthorized(res, 401, 'User not authenticated');
+      const { pass } = req.body;
+      if (!pass || pass.trim() === '') {
+        return HttpResponse.BadRequest(res, 400, 'Password is required');
+      }
+      const { tokenpass } = req.cookies;
+      if (!tokenpass) return HttpResponse.Unauthorized(res, 401, 'Unhautorized');
+      const updPass = await this.service.updatePass(pass, user);
+      if (!updPass) return HttpResponse.Unauthorized(res, 404, 'cannot be the same')
+      res.clearCookie('tokenpass');
+      return HttpResponse.Ok(res, 200, updPass);
+    } catch (error) {
+      next(error)
+    }
+  }
+
   checkUsersLastConection = async (req, res, next) => {
     try {
       const response = await this.service.checkUsersLastConection();
