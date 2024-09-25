@@ -33,7 +33,7 @@ const UserSchema = new Schema({
   cart: {
     type: Schema.Types.ObjectId,
     ref: "carts",
-    default: [],
+    default: undefined,
   },
   last_conection: {
     type: Date,

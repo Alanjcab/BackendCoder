@@ -8,7 +8,7 @@ export default class productController extends controllers {
   constructor() {
     super(prodServices)
   }
-  
+
   createProductM = async (req, res) => {
     try {
       const { cant } = req.query
@@ -24,6 +24,19 @@ export default class productController extends controllers {
       throw new Error(error);
     }
   }
+
+  createProduct = async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const productData = req.body;
+
+      const newProduct = await prodServices.createProduct(productData, email);
+    } catch (error) {
+      logger.error('Error creating product', error);
+      next(error);
+    }
+  };
+
 }
 
 

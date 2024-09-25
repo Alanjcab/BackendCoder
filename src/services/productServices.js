@@ -28,33 +28,15 @@ export default class productService extends services {
       throw new Error(error);
     }
   }
-  
 
-  async updateProduct(id, productData, user) {
+  async createProduct(productData, userEmail) {
     try {
-      const product = await ProductModel.findById(id);
-      if (!product) throw new Error('Product not found');
-
-      if (user.role === 'premium' && product.owner !== user.email) {
-        throw new Error('Permission denied: you can only modify your own products');
-      }
-
-      return await ProductModel.findByIdAndUpdate(id, productData, { new: true });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  async deleteProduct(id, user) {
-    try {
-      const product = await ProductModel.findById(id);
-      if (!product) throw new Error('Product not found');
-
-      if (user.role === 'premium' && product.owner !== user.email) {
-        throw new Error('Permission denied: you can only delete your own products');
-      }
-
-      return await ProductModel.findByIdAndDelete(id);
+      const productWithOwner = {
+        ...productData,
+        owner: userEmail,
+      };
+      const newProduct = await this.dao.create(productWithOwner);
+      return newProduct;
     } catch (error) {
       throw new Error(error);
     }

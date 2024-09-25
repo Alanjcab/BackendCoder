@@ -16,7 +16,7 @@ export default class cartServices extends services {
       if (!existProd) return null;
       if (user.role === 'premium' && existProd.owner === user.email) {
         throw new Error('Cannot add your own products to the cart');
-      };
+      }
       return await this.dao.addProdToCart(cartId, prodId);
     } catch (error) {
       throw new Error(error);

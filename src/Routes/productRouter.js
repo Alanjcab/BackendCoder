@@ -11,7 +11,7 @@ router.get('/',[isAuth], controller.getAll)
 router.get('/:id',[isAuth], controller.getById)
 router.post('/',[isAuth], controller.create)
 router.put('/:id',[isAuth, checkAdmin], controller.update)
-router.delete('/:id',[isAuth, checkAdmin], controller.delete)
+router.delete('/:id',[isAuth], controller.delete)
 
 export default router;
 

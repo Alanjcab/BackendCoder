@@ -24,19 +24,19 @@ export default class cartDaoMongo extends mongoDao {
   async addProdToCart(cartId, prodId) {
     try {
       const existProdInCart = await this.existProdInCart(cartId, prodId);
-        if(existProdInCart){
-          return await this.model.findOneAndUpdate(
-            { _id: cartId, 'products.product': prodId },
-            { $set: { 'products.$.quantity': existProdInCart.products[0].quantity + 1 } },
-            { new: true }
-          );
-        } else {
-          return await this.model.findByIdAndUpdate(
-            cartId,
-            { $push: { products: { product: prodId } } },
-            { new: true }
-          )
-        }
+      if (existProdInCart) {
+        return await this.model.findOneAndUpdate(
+          { _id: cartId, 'products.product': prodId },
+          { $set: { 'products.$.quantity': existProdInCart.products[0].quantity + 1 } },
+          { new: true }
+        );
+      } else {
+        return await this.model.findByIdAndUpdate(
+          cartId,
+          { $push: { products: { product: prodId } } },
+          { new: true }
+        );
+      }
     } catch (error) {
       throw new Error(error);
     }
