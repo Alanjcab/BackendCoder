@@ -23,6 +23,7 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
+    enum: ["user", "admin", "premium"],
     default: "user",
   },
   isGithub: {
@@ -32,7 +33,7 @@ const UserSchema = new Schema({
   cart: {
     type: Schema.Types.ObjectId,
     ref: "carts",
-    default: []
+    default: [],
   },
   last_conection: {
     type: Date,
@@ -44,3 +45,5 @@ const UserSchema = new Schema({
 });
 const userColl = "users";
 export const userModel = model(userColl, UserSchema);
+
+

@@ -8,23 +8,24 @@ export default class cartServices extends services {
   constructor() {
     super(cartDao)
   }
-  async addProdToCart(cartId, prodId) {
+  async addProdToCart(cartId, prodId, user) {
     try {
       const existCart = await this.getById(cartId);
       if (!existCart) return null;
-  
       const existProd = await prodDao.getById(prodId);
       if (!existProd) return null;
-
+      if (user.role === 'premium' && existProd.owner === user.email) {
+        throw new Error('Cannot add your own products to the cart');
+      };
       return await this.dao.addProdToCart(cartId, prodId);
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
-  };
+  }
   async removeProdToCart(cartId, prodId) {
     try {
       const existCart = await this.getById(cartId);
-      if(!existCart) return null;
+      if (!existCart) return null;
       const existProdInCart = await this.dao.existProdInCart(cartId, prodId);
       if (!existProdInCart) return null;
       return await this.dao.removeProdToCart(cartId, prodId);
@@ -35,11 +36,11 @@ export default class cartServices extends services {
   async updateProdQuantityToCart(cartId, prodId, quantity) {
     try {
       const existCart = await this.getById(cartId);
-      if(!existCart) return null;
-  
+      if (!existCart) return null;
+
       const existProdInCart = await this.dao.existProdInCart(cartId, prodId);
       if (!existProdInCart) return null;
-  
+
       return await this.dao.updateProdQuantityToCart(cartId, prodId, quantity);
     } catch (error) {
       throw new Error(error)

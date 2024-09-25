@@ -14,6 +14,7 @@ router.post('/reset-pass', [isAuth], controller.generateResetPass);
 router.put('/new-pass', [isAuth], controller.updatePass);
 router.put("/", checkAdmin, controller.checkUsersLastConection)
 router.get("/", [isAuth], checkAdmin, controller.getAllUsers)
+router.put("/premium/:id", controller.userRolChange)
 
 
 export default router;

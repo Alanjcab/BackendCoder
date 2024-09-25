@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/',[isAuth], controller.getAll)
 router.get('/:id',[isAuth], controller.getById)
-router.post('/',[isAuth, checkAdmin], controller.create)
+router.post('/',[isAuth], controller.create)
 router.put('/:id',[isAuth, checkAdmin], controller.update)
 router.delete('/:id',[isAuth, checkAdmin], controller.delete)
 

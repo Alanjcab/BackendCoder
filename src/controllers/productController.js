@@ -8,6 +8,7 @@ export default class productController extends controllers {
   constructor() {
     super(prodServices)
   }
+  
   createProductM = async (req, res) => {
     try {
       const { cant } = req.query

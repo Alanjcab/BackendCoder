@@ -6,6 +6,7 @@ export default class productDaoMongo extends mongoDao {
   constructor() {
     super(ProductModel);
   }
+  
 };
 
 

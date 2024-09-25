@@ -6,6 +6,7 @@ import cartDaoMongo from "../persistence/daos/mongoDb/cartDao.js";
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
 import { sendMail } from "./mailingServices.js";
+import { userModel } from "../persistence/daos/mongoDb/models/userModel.js";
 
 const CartDao = new cartDaoMongo();
 const UserRepository = new userRepository();
@@ -105,8 +106,7 @@ export default class userService extends services {
       const usersInactive = [];
       const users = await this.dao.getAll();
       for (const user of users) {
-        if (user.last_conection && hashBeenMoreThanXtime(user.last_conection)) {
-          console.log(`Pasó más de un minuto desde la última conexión: ${user._id}`);
+        if (user.last_conection && hashBeenMoreThanXtime(user.last_conection)) {;
           await this.dao.update(user._id, { active: false });
           usersInactive.push(user.email);
           await sendMail(user, 'inactiveAccountWarning');
@@ -126,6 +126,17 @@ export default class userService extends services {
     }
   }
 
+  async userRolChange(userId) {
+    try {
+      const user = await userModel.findById(userId); 
+      if (!user) return null; 
+      user.role = user.role === 'premium' ? 'user' : 'premium';
+      await user.save(); 
+      return user;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 };
 
 
