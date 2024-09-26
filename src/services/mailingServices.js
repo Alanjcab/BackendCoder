@@ -22,11 +22,11 @@ const createMsgReset = (first_name) =>
 const createMsgInactiveAccountWarning = (first_name) =>
   `<p>Hola ${first_name},</p>
     <p>Notamos que no has iniciado sesión en un tiempo.</p>
-    <p>Te recomendamos iniciar sesión cuanto antes para evitar la eliminación de tu cuenta.</p>`;
+    <p>Inicia sesión cuanto antes para evitar la eliminación de tu cuenta.</p>`;
 
 const createMsgProductDeleted = (first_name) =>
-  `<p>Hola ${first_name},</p>
-  <p>Tu producto ha sido eliminado.</p>`;
+  `<p>Hola ${first_name}</p>
+  <p>Un producto creado por vos se elimino.</p>`;
 
 export const sendMail = async (user, service, token = null) => {
   try {
