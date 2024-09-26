@@ -14,41 +14,37 @@ const transporter = createTransport({
 const createMsgRegister = (first_name) =>
   `<h1>Hola ${first_name}, ¡Bienvenido/a!</h1>`;
 
-const createMsgReset = (first_name) => {
-  return `<p>¡Hola ${first_name}! Hacé click <a href="http://localhost:8080/new-pass">AQUÍ</a> 
+const createMsgReset = (first_name) =>
+  `<p>Hola ${first_name} Hacé click <a href="http://localhost:8080/new-pass">AQUÍ</a> 
       para restablecer tu contraseña.
       </p>`;
-};
-const createMsgInactiveAccountWarning = (first_name) => `
-    <p>Hola ${first_name},</p>
+
+const createMsgInactiveAccountWarning = (first_name) =>
+  `<p>Hola ${first_name},</p>
     <p>Notamos que no has iniciado sesión en un tiempo.</p>
-    <p>Te recomendamos iniciar sesión cuanto antes para evitar la eliminación de tu cuenta.</p>
-  `;
+    <p>Te recomendamos iniciar sesión cuanto antes para evitar la eliminación de tu cuenta.</p>`;
+
+const createMsgProductDeleted = (first_name) =>
+  `<p>Hola ${first_name},</p>
+  <p>Tu producto ha sido eliminado.</p>`;
 
 export const sendMail = async (user, service, token = null) => {
   try {
     const { first_name, email } = user;
 
-    let msg = "";
+    const msg =
+      service === "register" ? createMsgRegister(first_name) :
+        service === "resetPass" ? createMsgReset(first_name) :
+          service === "inactiveAccountWarning" ? createMsgInactiveAccountWarning(first_name) :
+            service === "productDeleted" ? createMsgProductDeleted(first_name) :
+              "";
 
-    service === "register"
-      ? (msg = createMsgRegister(first_name))
-      : service === "resetPass"
-        ? (msg = createMsgReset(first_name))
-        : service === "inactiveAccountWarning"
-          ? (msg = createMsgInactiveAccountWarning(first_name))
-          : (msg = "");
-
-    let subj = "";
-
-    subj =
-      service === "register"
-        ? "Bienvenido/a"
-        : service === "resetPass"
-          ? "Restablecer contraseña"
-          : service === "inactiveAccountWarning"
-            ? "Advertencia de cuenta inactiva"
-            : "";
+    const subj =
+      service === "register" ? "Bienvenido/a" :
+        service === "resetPass" ? "Restablecer contraseña" :
+          service === "inactiveAccountWarning" ? "Advertencia de cuenta inactiva" :
+            service === "productDeleted" ? "Tu producto ha sido eliminado" :
+              "";
 
     const gmailOptions = {
       from: process.env.GMAIL,
@@ -59,7 +55,7 @@ export const sendMail = async (user, service, token = null) => {
 
     const response = await transporter.sendMail(gmailOptions);
     if (token) return token;
-    console.log("email enviado con exito", response);
+    console.log("Email enviado con éxito", response);
   } catch (error) {
     throw new Error(error);
   }
