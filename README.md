@@ -1,4 +1,4 @@
-# API Documentation
+# Backend CoderHouse
 
 Esta es la documentación de la API para la aplicación backend. A continuación se describen los endpoints disponibles, junto con sus métodos HTTP, descripciones y posibles respuestas.
 
