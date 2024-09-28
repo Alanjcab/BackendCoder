@@ -110,13 +110,15 @@ export default class userController extends controllers {
     try {
       const { id } = req.params;
       const updatedUser = await this.service.userRolChange(id);
-
       if (!updatedUser) return HttpResponse.NotFound(res, 'User not found');
+      if (req.user && req.user._id.toString() === id) {
+        req.user.role = updatedUser.role;
+      }
       return HttpResponse.Ok(res, `User role updated to ${updatedUser.role}`);
     } catch (error) {
-      next(error.message);
+      next(error);
     }
-  }
+  };
 }
 
 

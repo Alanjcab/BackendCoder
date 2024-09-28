@@ -1,7 +1,6 @@
 import controllers from "./classController.js";
 import productService from "../services/productServices.js";
 import { httpResponse } from "../utils/httpResponse.js";
-import { logger } from "../utils/logger.js";
 import { userModel } from "../persistence/daos/mongoDb/models/userModel.js";
 import { sendMail } from "../services/mailingServices.js";
 
@@ -31,12 +30,14 @@ export default class productController extends controllers {
 
   createProduct = async (req, res, next) => {
     try {
-      const { email } = req.user;
+      const { email, role } = req.user;
+      if (role !== 'admin' && role !== 'premium') {
+        return HttpResponse.Forbidden(res, 'No tenes permiso para crear productos.');
+      }
       const productData = req.body;
-
       const newProduct = await prodServices.createProduct(productData, email);
+      return HttpResponse.Ok(res, newProduct);
     } catch (error) {
-      logger.error('Error creating product', error);
       next(error);
     }
   };
@@ -49,27 +50,22 @@ export default class productController extends controllers {
       if (product.owner && product.owner !== "admin") {
         const user = await userModel.findOne({ email: product.owner });
         if (user && user.role === "premium") {
-          console.log("Usuario premium encontrado, enviando correo...");
           await sendMail(user, "productDeleted");
-          console.log("Correo enviado al usuario premium.");
         } else {
-          console.log("El usuario no es premium o no fue encontrado.");
+          console.log("El usuario no es premium.");
         }
       } else {
-        console.log("El producto no tiene un dueño válido para enviar un correo.");
+        console.log("El producto no tiene rol premiun para enviar un correo.");
       }
-
       const deletedProduct = await prodServices.delete(id);
       if (!deletedProduct) {
         return HttpResponse.NotFound(res, "Error eliminando el producto");
       }
       return HttpResponse.Ok(res, "Producto eliminado con éxito");
     } catch (error) {
-      logger.error("Error eliminando producto", error);
       next(error);
     }
   };
-
 }
 
 
